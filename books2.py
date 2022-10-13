@@ -1,5 +1,6 @@
 from typing import Optional
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 import uvicorn
 from pydantic import BaseModel, Field
 from uuid import UUID
@@ -59,6 +60,18 @@ async def create_book(book: Book):
     return book
 
 
+@app.put("/{id}")
+async def update_book(id: UUID, book: Book):
+    index = 0
+    for x in books:
+        index += 1
+        if x.id == id:
+            books[index - 1] = book
+            return book
+
+    return JSONResponse(status_code=404, content={"error": f"book with id {id} not found"})
+
+
 def create_books_no_api():
     book_1 = Book(id="c6d7993c-4aca-11ed-b878-0242ac120002",
                   title="RIGHTEOUS PREY",
@@ -93,4 +106,4 @@ def create_books_no_api():
 
 
 if __name__ == "__main__":
-    uvicorn(app)
+    uvicorn.run(app)
