@@ -72,6 +72,18 @@ async def update_book(id: UUID, book: Book):
     return JSONResponse(status_code=404, content={"error": f"book with id {id} not found"})
 
 
+@app.delete("/{id}")
+async def delete_book(id: UUID):
+    index = 0
+    for x in books:
+        index += 1
+        if x.id == id:
+            del books[index - 1]
+            return JSONResponse(status_code=200, content={"message": f"book with id {id} deleted"})
+
+    return JSONResponse(status_code=404, content={"error": f"book with id {id} not found"})
+
+
 def create_books_no_api():
     book_1 = Book(id="c6d7993c-4aca-11ed-b878-0242ac120002",
                   title="RIGHTEOUS PREY",
