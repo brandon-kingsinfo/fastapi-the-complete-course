@@ -2,15 +2,15 @@ from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 from typing import Optional
 import uvicorn
-from SQLConnection import SQLConnect
+from SQLConnection import get_db
 
 app = FastAPI()
 
 
 @app.get("/")
-async def get_orders(db=Depends(SQLConnect)):
+async def get_orders(db=Depends(get_db)):
     '''return all orders'''
-    orders = db.session.query(db.order_master).all()
+    orders = db.session.query(db.order_detail).all()
 
     return orders
 

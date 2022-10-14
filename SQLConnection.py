@@ -17,6 +17,7 @@ def get_db():
         # db.session.rollback()
         raise
     finally:
+        print("closing connection...")
         db.close()
 
 
